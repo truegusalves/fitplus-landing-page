@@ -189,16 +189,8 @@ html {
     transform: scale(1.02);
 }
 
-body.lightbox-open {
-    position: fixed;
-    top: var(--lightbox-scroll-y);
-    inset-inline: 0;
-    width: 100%;
-    overflow: hidden;
-}
-
 .image-lightbox {
-    position: relative;
+    position: fixed;
     width: min(92vw, 58rem);
     max-width: none;
     max-height: 100dvh;

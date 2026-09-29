@@ -111,16 +111,16 @@
                 lightboxImage.src = image.currentSrc || image.src;
                 lightboxImage.alt = image.alt;
                 previousScrollY = window.scrollY;
-                document.body.style.setProperty('--lightbox-scroll-y', `-${previousScrollY}px`);
-                document.body.classList.add('lightbox-open');
                 lightbox.showModal();
             });
         });
 
         lightbox.addEventListener('close', () => {
-            document.body.classList.remove('lightbox-open');
-            document.body.style.removeProperty('--lightbox-scroll-y');
-            requestAnimationFrame(() => window.scrollTo(0, previousScrollY));
+            requestAnimationFrame(() => {
+                if (window.scrollY !== previousScrollY) {
+                    window.scrollTo({ top: previousScrollY, behavior: 'instant' });
+                }
+            });
         });
 
         lightboxClose.addEventListener('click', () => lightbox.close());
