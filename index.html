@@ -27,7 +27,9 @@
         </div>
 
         <div class="hero__col hero__col--center">
-            <img class="hero__image" src="images/print_1.png" alt="Print do aplicativo fitness">
+            <button class="image-trigger" type="button" aria-label="Ampliar imagem: tela inicial do aplicativo">
+                <img class="hero__image" src="images/print_1.png" alt="Print do aplicativo fitness">
+            </button>
         </div>
 
         <div class="hero__col hero__col--right">
@@ -41,7 +43,9 @@
 
     <section class="features">
         <article class="feature">
-            <img class="feature__image" src="images/print_2.png" alt="Tela de contagem de calorias do app">
+            <button class="image-trigger" type="button" aria-label="Ampliar imagem: tela de contagem de calorias">
+                <img class="feature__image" src="images/print_2.png" alt="Tela de contagem de calorias do app">
+            </button>
             <div class="feature__text">
                 <h2 class="feature__title">Contagem de calorias</h2>
                 <p class="feature__description">Registre o que você come e acompanhe o consumo diário de forma simples, para manter o equilíbrio da sua alimentação.</p>
@@ -52,7 +56,9 @@
         </article>
 
         <article class="feature feature--reverse">
-            <img class="feature__image" src="images/print_3.png" alt="Tela de exercícios do app">
+            <button class="image-trigger" type="button" aria-label="Ampliar imagem: tela de exercícios">
+                <img class="feature__image" src="images/print_3.png" alt="Tela de exercícios do app">
+            </button>
             <div class="feature__text">
                 <h2 class="feature__title">Exercícios específicos</h2>
                 <p class="feature__description">Treinos de corrida, musculação e outras modalidades, organizados para você treinar com clareza e consistência.</p>
@@ -63,7 +69,9 @@
         </article>
 
         <article class="feature">
-            <img class="feature__image" src="images/print_4.png" alt="Tela de compartilhamento com amigos do app">
+            <button class="image-trigger" type="button" aria-label="Ampliar imagem: tela de compartilhamento com amigos">
+                <img class="feature__image" src="images/print_4.png" alt="Tela de compartilhamento com amigos do app">
+            </button>
             <div class="feature__text">
                 <h2 class="feature__title">Compartilhe com amigos</h2>
                 <p class="feature__description">Mostre seu progresso, acompanhe quem treina com você e mantenha a motivação em grupo.</p>
@@ -85,6 +93,49 @@
     <footer class="footer">
         <p class="footer__copy">Todos os direitos reservados</p>
     </footer>
+
+    <dialog class="image-lightbox" aria-label="Imagem ampliada">
+        <button class="image-lightbox__close" type="button" aria-label="Fechar imagem ampliada">&times;</button>
+        <img class="image-lightbox__image" alt="">
+    </dialog>
+
+    <script>
+        const lightbox = document.querySelector('.image-lightbox');
+        const lightboxImage = lightbox.querySelector('.image-lightbox__image');
+        const lightboxClose = lightbox.querySelector('.image-lightbox__close');
+        let previousScrollY = 0;
+
+        document.querySelectorAll('.image-trigger').forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+                const image = trigger.querySelector('img');
+                lightboxImage.src = image.currentSrc || image.src;
+                lightboxImage.alt = image.alt;
+                previousScrollY = window.scrollY;
+                document.body.style.setProperty('--lightbox-scroll-y', `-${previousScrollY}px`);
+                document.body.classList.add('lightbox-open');
+                lightbox.showModal();
+            });
+        });
+
+        lightbox.addEventListener('close', () => {
+            document.body.classList.remove('lightbox-open');
+            document.body.style.removeProperty('--lightbox-scroll-y');
+            requestAnimationFrame(() => window.scrollTo(0, previousScrollY));
+        });
+
+        lightboxClose.addEventListener('click', () => lightbox.close());
+        lightbox.addEventListener('click', (event) => {
+            if (event.target === lightbox) {
+                lightbox.close();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && lightbox.open) {
+                lightbox.close();
+            }
+        });
+    </script>
 </body>
 
 </html>
